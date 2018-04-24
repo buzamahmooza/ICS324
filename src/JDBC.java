@@ -3,14 +3,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.util.Arrays;
 
 /**
  * @author Faris Hijazi st201578750
  */
 public class JDBC extends JFrame {
-    private JTextField txtMcode = new JTextField(4);
-    private JTextField txtResult = new JTextField(30);
+    private JTextField txtMcode = new JTextField(4),
+            txtResult = new JTextField(30),
+            txtSQL = new JTextField(30);
     private JPanel resultsPanelContainer = new JPanel();
     private Statement s = null;
 
@@ -20,10 +20,17 @@ public class JDBC extends JFrame {
         JLabel lblMcode = new JLabel("Mcode");
         add(lblMcode);
         add(txtMcode);
+
         JLabel lblResult = new JLabel("Result");
         add(lblResult);
         add(txtResult);
+
+        JLabel lblSQL = new JLabel("Raw SQL");
+        add(lblSQL);
+        add(txtSQL);
+
         add(resultsPanelContainer);
+
         JButton find = new JButton("Find");
         add(find);
 
@@ -35,23 +42,49 @@ public class JDBC extends JFrame {
             conn.setAutoCommit(false);
 
             s = conn.createStatement();
-            ActionListener queryListener = (ActionEvent a) -> {
+
+            ActionListener inputListener = (ActionEvent a) -> {
                 // list the students in a given major entered in a text field
                 String inputText = txtMcode.getText();
                 String query = "SELECT SNAME, SN " +
                         "FROM MAJOR NATURAL JOIN STUDENT WHERE MCODE = '" + inputText + "'";
+                resultsPanelContainer.removeAll();
                 try {
                     ResultSet rs = this.s.executeQuery(query);
                     DBTablePrinter.printTable(conn, "students in " + inputText);
 
-                    resultsPanelContainer.removeAll();
                     resultsPanelContainer.add(new ResultsPanel(rs));
                 } catch (SQLException e) {
                     txtResult.setText("Query Error");
                     System.exit(0);
                 }
             };
-            find.addActionListener(queryListener);
+            ActionListener sqlListener = (ActionEvent a) -> {
+                String inputQuery = txtSQL.getText();
+                System.out.println("Executin query:\n" + inputQuery);
+                resultsPanelContainer.removeAll();
+                try {
+                    ResultSet rs = this.s.executeQuery(inputQuery);
+                    DBTablePrinter.printTable(conn, "Query result " + inputQuery);
+
+                    resultsPanelContainer.add(new ResultsPanel(rs));
+
+                    System.out.println("Result of " + inputQuery + ":" +
+                            "\nrs.toString():\t" + rs.toString() +
+                            "\nresultToString:\t" + resultToString(rs));
+
+                } catch (SQLException e) {
+                    txtResult.setText("Query Error");
+                    e.printStackTrace();
+//                    System.exit(0);
+                }
+            };
+
+
+            find.addActionListener(inputListener);
+            txtMcode.addActionListener(inputListener);
+            txtSQL.addActionListener(sqlListener);
+
         } catch (SQLException e) {
             System.err.print("Connection Error");
             e.printStackTrace();
