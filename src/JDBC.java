@@ -1,36 +1,47 @@
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.Arrays;
 
 /**
  * @author Faris Hijazi st201578750
  */
 public class JDBC extends JFrame {
-    private JTextField txtMcode = new JTextField(10),
-            txtResult = new JTextField(30),
-            txtSQL = new JTextField(10);
+    private JTextField txtMcode = new JTextField(10);
+    private JTextField txtSQL = new JTextField(10);
+    private JTextArea txtResult = new JTextArea(20, 30);
+    JScrollPane scrollPane = new JScrollPane(txtResult);
+
     private JPanel resultsPanelContainer = new JPanel();
+
     private Statement s = null;
-    Font font = new Font("Calibri", Font.PLAIN, 40);
+    final int SIZE_FACTOR = 2;
+    Font font = new Font("Calibri", Font.PLAIN, 10 * SIZE_FACTOR);
 
     private JDBC() {
         super("JDBC Example");
-        setLayout(new FlowLayout());
-        JLabel lblMcode = new JLabel("Mcode");
-        add(lblMcode);
-        add(txtMcode);
+//        setLayout(new FlowLayout());
+        setLayout(new GridLayout(0, 2));
+//        JLabel lblMcode = new JLabel("Mcode");
+//        add(lblMcode);
+//        add(txtMcode);
 
         JLabel lblResult = new JLabel("Result");
-        add(lblResult);
-        add(txtResult);
+        JPanel resP = new JPanel();
+        resP.add(lblResult);
+        resP.add(txtResult);
+        add(resP);
 
         JLabel lblSQL = new JLabel("Raw SQL");
-        add(lblSQL);
-        add(txtSQL);
+        JPanel sqlP = new JPanel();
+        sqlP.add(lblSQL);
+        sqlP.add(txtSQL);
+        add(sqlP);
 
-        lblMcode.setFont(font);
+//        lblMcode.setFont(font);
         lblResult.setFont(font);
         lblSQL.setFont(font);
 
@@ -39,13 +50,14 @@ public class JDBC extends JFrame {
         txtMcode.setFont(font);
         txtResult.setFont(font);
 
-        add(resultsPanelContainer);
 
-        JButton find = new JButton("Find");
-        add(find);
+//        add(new JButton("Find"));
+        add(resultsPanelContainer);
+        add(scrollPane);
 
         //               "jdbc:oracle:thin:@ics-db:1521:xe";
         String connStr = "jdbc:oracle:thin:@172.16.0.239:1521:xe";
+
 
         try {
             final Connection conn = DriverManager.getConnection(connStr, "ICS324", "ICS324");
@@ -79,19 +91,22 @@ public class JDBC extends JFrame {
 
                     resultsPanelContainer.add(new ResultsPanel(rs));
 
-                    System.out.println("Result of " + inputQuery + ":" +
+                    String output = "Result of " + inputQuery + ":" +
                             "\nrs.toString():\t" + rs.toString() +
-                            "\nresultToString:\t" + resultToString(rs));
+                            "\nresultToString:\t" + resultToString(rs);
+                    System.out.println(output);
+                    txtResult.setText(txtResult.getText() + "\n" + output);
+
 
                 } catch (SQLException e) {
                     txtResult.setText("Query Error");
                     e.printStackTrace();
 //                    System.exit(0);
                 }
+                resultsPanelContainer.repaint();
             };
 
 
-            find.addActionListener(inputListener);
             txtMcode.addActionListener(inputListener);
             txtSQL.addActionListener(sqlListener);
 
@@ -123,7 +138,10 @@ public class JDBC extends JFrame {
                 while (resultSet.next()) {
                     //Print one row
                     for (int i = 1; i <= columnsNumber; i++) {
-                        this.add(new JTextField(resultSet.getString(i))); //Print one element of a row
+                        JTextComponent resultCell = new JTextField(resultSet.getString(i));
+                        resultCell.setFont(font);
+                        resultCell.setEditable(false);
+                        this.add(resultCell); //Print one element of a row
                     }
                     r++;//Move to the next line to print the next row.
                 }
@@ -131,6 +149,19 @@ public class JDBC extends JFrame {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static String resultSetToString(ResultSet rs) {
+        StringBuilder str = new StringBuilder();
+        try {
+            while (rs.next()) {
+                str.append(rs.getString(1)); // or rs.getString("//your column name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            str.append("\n").append(Arrays.toString(e.getStackTrace())).append(e.getSQLState());
+        }
+        return str.toString();
     }
 
     public static String resultToString(ResultSet resultSet) {
