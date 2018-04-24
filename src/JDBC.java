@@ -8,11 +8,12 @@ import java.sql.*;
  * @author Faris Hijazi st201578750
  */
 public class JDBC extends JFrame {
-    private JTextField txtMcode = new JTextField(4),
+    private JTextField txtMcode = new JTextField(10),
             txtResult = new JTextField(30),
-            txtSQL = new JTextField(30);
+            txtSQL = new JTextField(10);
     private JPanel resultsPanelContainer = new JPanel();
     private Statement s = null;
+    Font font = new Font("Calibri", Font.PLAIN, 40);
 
     private JDBC() {
         super("JDBC Example");
@@ -28,6 +29,15 @@ public class JDBC extends JFrame {
         JLabel lblSQL = new JLabel("Raw SQL");
         add(lblSQL);
         add(txtSQL);
+
+        lblMcode.setFont(font);
+        lblResult.setFont(font);
+        lblSQL.setFont(font);
+
+
+        txtSQL.setFont(font);
+        txtMcode.setFont(font);
+        txtResult.setFont(font);
 
         add(resultsPanelContainer);
 
