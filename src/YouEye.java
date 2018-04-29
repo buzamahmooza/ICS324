@@ -164,135 +164,52 @@ public class YouEye extends JFrame {
             }
         });
 
-        final ActionListener submitListener = a -> {
+        final ActionListener submitListener = (ActionEvent a) -> {
             System.out.println("Submitted...");
             final boolean issStudent = txtStudentId.getText().length() > 0,
                     issSemester = txtSemester.getText().length() > 0,
                     issCourse = txtCourseCode.getText().length() > 0;
 
             final String ATTR_STUDENT_ID = "S_ID";
+            String query = "";
             if (issStudent && issSemester && issCourse) { // Retrieve
                 // a student's details for a certain course on a certain semester
 
             } else {
                 if (issStudent && issSemester) { // Retrieve a student's details for all courses in a certain semester
-                    final String query = "SELECT DISTINCT COURSE_NUM FROM ENROLLED_IN " +
+                    query = "SELECT DISTINCT COURSE_NUM FROM ENROLLED_IN " +
                             "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'AND TERM = '" + txtSemester.getText() + "'";
-                    try {
-                        ResultSet r = s.executeQuery(query);
-                        updateResults(r);
-
-                        if (r.next()) {
-                            /*list results*/
-                            chckbxStudentId.setText(r.getString(1));
-                        } else {
-                            //display results
-                            chckbxStudentId.setText("Not Found");
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        chckbxStudentId.setText("Query Error");
-                    }
                 } else if (issStudent && issCourse) {
-
-                    final String query = "SELECT DISTINCT TERM FROM ENROLLED_IN " +
+                    query = "SELECT DISTINCT TERM FROM ENROLLED_IN " +
                             "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'AND COURSE_NUM = '" + txtCourseCode.getText() + "'";
-                    try {
-                        ResultSet r = s.executeQuery(query);
-                        updateResults(r);
-
-                        if (r.next()) {
-                            /*list results*/
-                            chckbxStudentId.setText(r.getString(1));
-                        } else {
-                            //display results
-                            chckbxStudentId.setText("Not Found");
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        chckbxStudentId.setText("Query Error");
-                    }
-
-
                 } else if (issSemester && issCourse) { // Retrieve all students' details for a certain course in a certain semester
-
-                    final String query = "SELECT DISTINCT " + ATTR_STUDENT_ID + " FROM ENROLLED_IN " +
+                    query = "SELECT DISTINCT " + ATTR_STUDENT_ID + " FROM ENROLLED_IN " +
                             "WHERE COURSE_NUM = '" + txtCourseCode.getText() + "'" + "AND TERM = '" + txtSemester.getText() + "'";
-                    try {
-                        ResultSet r = s.executeQuery(query);
-                        updateResults(r);
-
-                        if (r.next()) {
-                            /*list results*/
-                            chckbxStudentId.setText(r.getString(1));
-                        } else {
-                            //display results
-                            chckbxStudentId.setText("Not Found");
-                        }
-
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        chckbxStudentId.setText("Query Error");
-                    }
-
                 } else if (issStudent) { // Retrieve all courses and their respective semesters given a student's ID
-
-                    String query = "SELECT DISTINCT COURSE_NUM, TERM " +
+                    query = "SELECT DISTINCT COURSE_NUM, TERM " +
                             "FROM ENROLLED_IN " +
                             "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'";
-                    try {
-                        ResultSet r = s.executeQuery(query);
-                        updateResults(r);
-                        if (r.next()) {
-                            /*list results*/
-                            chckbxStudentId.setText(r.getString(1));
-                        } else {
-                            //display results
-                            chckbxStudentId.setText("Not Found");
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        chckbxStudentId.setText("Query Error");
-                    }
-
                 } else if (issSemester) { // Retrieve multiple instances of multiple students corresponding to what courses they took on a certain semester(?)
-
-                    String query = "SELECT Course_num FROM Course " +
+                    query = "SELECT Course_num FROM Course " +
                             "WHERE TERM = '" + txtSemester.getText() + "'";
-                    try {
-                        ResultSet r = s.executeQuery(query);
-                        updateResults(r);
-                        if (r.next()) {
-                            /*list results*/
-                            chckbxSemester.setText(r.getString(1));
-                        } else {
-                            //display results
-                            chckbxSemester.setText("Not Found");
-                        }
-
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        chckbxSemester.setText("Query Error");
-                    }
-
                 } else if (issCourse) {// Retrieve students and	the semester in which they took a certain course
-
-                    String query = "SELECT TERM FROM COURSE " +
+                    query = "SELECT TERM FROM COURSE " +
                             "WHERE COURSE_NUM = '" + txtCourseCode.getText() + "'";
-                    try {
-                        ResultSet r = s.executeQuery(query);
-                        updateResults(r);
-                        if (r.next()) {
-                            /*list results*/
-                            chckbxCourse.setText(r.getString(1));
-                        } else {
-                            //display results
-                            chckbxCourse.setText("Not Found");
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        chckbxCourse.setText("Query Error");
+                } else query = "";
+
+                try {
+                    ResultSet r = s.executeQuery(query);
+                    updateResults(r);
+                    if (r.next()) {
+                        /*list results*/
+                        chckbxCourse.setText(r.getString(1));
+                    } else {
+                        //display results
+                        chckbxCourse.setText("Not Found");
                     }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    chckbxCourse.setText("Query Error");
                 }
             }
         };
@@ -309,7 +226,6 @@ public class YouEye extends JFrame {
 
         contentPane.add(resultsPanelContainer);
         resultsPanelContainer.setBounds(140, 221, 141, 35);
-        this.pack();
     }
 
     private void updateResults(ResultSet rs) {
