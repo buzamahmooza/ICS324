@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c5ced752-48a7-47da-b3bf-0ffdefe5dece" name="Default" comment="Added YouEye class.&#10;Added JDBC functionality to YouEye class.&#10;Eliminated the need for checkboxes.&#10;Added ActionListener to all textFields">
+    <list default="true" id="c5ced752-48a7-47da-b3bf-0ffdefe5dece" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/out/production/ICS324/DBTablePrinter$Column.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ICS324/DBTablePrinter.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/ICS324/JDBC$ResultsPanel.class" afterPath="$PROJECT_DIR$/out/production/ICS324/JDBC$ResultsPanel.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/ICS324/JDBC.class" afterPath="$PROJECT_DIR$/out/production/ICS324/JDBC.class" />
-      <change beforePath="$PROJECT_DIR$/src/JDBC.java" afterPath="$PROJECT_DIR$/src/JDBC.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,8 +31,8 @@
       <file leaf-file-name="YouEye.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/YouEye.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="795">
-              <caret line="311" column="20" lean-forward="false" selection-start-line="311" selection-start-column="20" selection-end-line="311" selection-end-column="20" />
+            <state relative-caret-position="647">
+              <caret line="307" column="44" lean-forward="true" selection-start-line="307" selection-start-column="44" selection-end-line="307" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1811#2235#0" expanded="false" />
@@ -431,7 +426,7 @@
       <workItem from="1524563006274" duration="15849000" />
       <workItem from="1524649466081" duration="1422000" />
       <workItem from="1524676796854" duration="661000" />
-      <workItem from="1525011132363" duration="5894000" />
+      <workItem from="1525011132363" duration="5936000" />
     </task>
     <task id="LOCAL-00001" summary="Added big font">
       <created>1524577110544</created>
@@ -447,11 +442,18 @@
       <option name="project" value="LOCAL" />
       <updated>1524581696454</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added YouEye class.&#10;Added JDBC functionality to YouEye class.&#10;Eliminated the need for checkboxes.&#10;Added ActionListener to all textFields">
+      <created>1525017068789</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1525017068790</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41477000" />
+    <option name="totallyTimeSpent" value="41519000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -616,8 +618,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/YouEye.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="311" column="20" lean-forward="false" selection-start-line="311" selection-start-column="20" selection-end-line="311" selection-end-column="20" />
+        <state relative-caret-position="647">
+          <caret line="307" column="44" lean-forward="true" selection-start-line="307" selection-start-column="44" selection-end-line="307" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1811#2235#0" expanded="false" />
