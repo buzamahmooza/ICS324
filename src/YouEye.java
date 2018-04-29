@@ -33,7 +33,7 @@ public class YouEye extends JFrame {
 
     public YouEye() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setBounds(100, 100, 476, 427);
+        setBounds(100, 100, 679, 655);
         JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -229,7 +229,7 @@ public class YouEye extends JFrame {
         txtSQL.setBounds(21, 263, 238, 35);
 
         contentPane.add(resultsPanelContainer);
-        resultsPanelContainer.setBounds(140, 221, 141, 35);
+        resultsPanelContainer.setBounds(300, 179, 332, 384);
     }
 
     private void updateResults(ResultSet rs) {
