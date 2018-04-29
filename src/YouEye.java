@@ -166,26 +166,29 @@ public class YouEye extends JFrame {
 
         final ActionListener submitListener = (ActionEvent a) -> {
             System.out.println("Submitted...");
-            final boolean issStudent = txtStudentId.getText().length() > 0,
+            final boolean issStudentId = txtStudentId.getText().length() > 0,
                     issSemester = txtSemester.getText().length() > 0,
                     issCourse = txtCourseCode.getText().length() > 0;
 
             final String ATTR_STUDENT_ID = "S_ID";
             String query = "";
-            if (issStudent && issSemester && issCourse) { // Retrieve
+            if (issStudentId && issSemester && issCourse) { // Retrieve
                 // a student's details for a certain course on a certain semester
-
+                query = "SELECT DISTINCT COURSE_NUM FROM ENROLLED_IN " +
+                        "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() +
+                        "'AND TERM = '" + txtSemester.getText() + "'" +
+                         "AND TERM = '" + txtCourseCode.getText() + "'";
             } else {
-                if (issStudent && issSemester) { // Retrieve a student's details for all courses in a certain semester
+                if (issStudentId && issSemester) { // Retrieve a student's details for all courses in a certain semester
                     query = "SELECT DISTINCT COURSE_NUM FROM ENROLLED_IN " +
                             "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'AND TERM = '" + txtSemester.getText() + "'";
-                } else if (issStudent && issCourse) {
+                } else if (issStudentId && issCourse) {
                     query = "SELECT DISTINCT TERM FROM ENROLLED_IN " +
                             "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'AND COURSE_NUM = '" + txtCourseCode.getText() + "'";
                 } else if (issSemester && issCourse) { // Retrieve all students' details for a certain course in a certain semester
                     query = "SELECT DISTINCT " + ATTR_STUDENT_ID + " FROM ENROLLED_IN " +
                             "WHERE COURSE_NUM = '" + txtCourseCode.getText() + "'" + "AND TERM = '" + txtSemester.getText() + "'";
-                } else if (issStudent) { // Retrieve all courses and their respective semesters given a student's ID
+                } else if (issStudentId) { // Retrieve all courses and their respective semesters given a student's ID
                     query = "SELECT DISTINCT COURSE_NUM, TERM " +
                             "FROM ENROLLED_IN " +
                             "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'";
