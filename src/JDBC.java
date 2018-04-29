@@ -21,6 +21,9 @@ public class JDBC extends JFrame {
     final int SIZE_FACTOR = 2;
     Font font = new Font("Calibri", Font.PLAIN, 10 * SIZE_FACTOR);
 
+//    To view all available tables:     SELECT table_name FROM user_tables
+
+
     private JDBC() {
         super("JDBC Example");
 //        setLayout(new FlowLayout());
@@ -55,12 +58,14 @@ public class JDBC extends JFrame {
         add(resultsPanelContainer);
         add(scrollPane);
 
-        //               "jdbc:oracle:thin:@ics-db:1521:xe";
         String connStr = "jdbc:oracle:thin:@172.16.0.239:1521:xe";
+        //               "jdbc:oracle:thin:@ics-db:1521:xe";
 
 
         try {
-            final Connection conn = DriverManager.getConnection(connStr, "ICS324", "ICS324");
+            final String USER_NAME = "ICS324",
+                    PWD = "ICS324";
+            final Connection conn = DriverManager.getConnection(connStr, USER_NAME, PWD);
             conn.setAutoCommit(false);
 
             s = conn.createStatement();
@@ -73,7 +78,7 @@ public class JDBC extends JFrame {
                 resultsPanelContainer.removeAll();
                 try {
                     ResultSet rs = this.s.executeQuery(query);
-                    DBTablePrinter.printTable(conn, "students in " + inputText);
+//                    DBTablePrinter.printTable(conn, "students in " + inputText);
 
                     resultsPanelContainer.add(new ResultsPanel(rs));
                 } catch (SQLException e) {
@@ -87,13 +92,18 @@ public class JDBC extends JFrame {
                 resultsPanelContainer.removeAll();
                 try {
                     ResultSet rs = this.s.executeQuery(inputQuery);
-                    DBTablePrinter.printTable(conn, "Query result " + inputQuery);
+
+//                    try {
+//                        DBTablePrinter.printTable(conn, "Query result " + inputQuery);
+//                    } catch (NoClassDefFoundError e) {
+//                        e.printStackTrace();
+//                    }
 
                     resultsPanelContainer.add(new ResultsPanel(rs));
 
                     String output = "Result of " + inputQuery + ":" +
                             "\nrs.toString():\t" + rs.toString() +
-                            "\nresultToString:\t" + resultToString(rs);
+                            "\nresultToString:\t" + resultSetToString(rs);
                     System.out.println(output);
                     txtResult.setText(txtResult.getText() + "\n" + output);
 
@@ -118,7 +128,6 @@ public class JDBC extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
         setVisible(true);
-
     }
 
     class ResultsPanel extends JPanel {
@@ -161,6 +170,7 @@ public class JDBC extends JFrame {
             e.printStackTrace();
             str.append("\n").append(Arrays.toString(e.getStackTrace())).append(e.getSQLState());
         }
+        System.out.println(str);
         return str.toString();
     }
 
