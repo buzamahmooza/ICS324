@@ -1,19 +1,23 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Queue;
 
 public class YouEye extends JFrame {
 
     private JPanel resultsPanelContainer = new JPanel();
     private JTextField txtStudentId,
             txtSemester,
-            txtCourseCode;
-    private JTextField txtSQL = new JTextField(10);
+            txtCourseNum;
+    private JTextField txtSQL = new JTextField(15);
 
     Statement s = null;
     final int SIZE_FACTOR = 2;
@@ -24,7 +28,6 @@ public class YouEye extends JFrame {
             try {
                 YouEye frame = new YouEye();
                 frame.setVisible(true);
-                frame.setResizable(false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -33,94 +36,41 @@ public class YouEye extends JFrame {
 
     public YouEye() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setBounds(100, 100, 679, 655);
         JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
-        contentPane.setLayout(null);
+        contentPane.setLayout(new FlowLayout());
+        setMinimumSize(new Dimension(300, 200));
 
         //Student ID text field
         txtStudentId = new JTextField();
-//        txtStudentId.setText("Enter Student ID");
-//        txtStudentId.setEnabled(false);
-        txtStudentId.setBounds(21, 44, 186, 32);
-        contentPane.add(txtStudentId);
         txtStudentId.setColumns(10);
-
-        //Student ID's check box
-        JCheckBox chckbxStudentId = new JCheckBox("Student ID");
-        chckbxStudentId.setBounds(224, 44, 151, 33);
-        chckbxStudentId.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                txtStudentId.setEnabled(true);
-                txtStudentId.setText("");
-
-            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                txtStudentId.setEnabled(false);
-                txtStudentId.setText("Enter Student ID");
-
-            }
-
-            validate();
-            repaint();
-        });
-
-        contentPane.add(chckbxStudentId);
 
         //Semester text field
         txtSemester = new JTextField();
-//        txtSemester.setEnabled(false);
-//        txtSemester.setText("Enter Semester");
-        txtSemester.setBounds(21, 97, 186, 32);
-        contentPane.add(txtSemester);
         txtSemester.setColumns(10);
 
-        //Semester check box
-        JCheckBox chckbxSemester = new JCheckBox("Semester");
-        chckbxSemester.setBounds(224, 90, 179, 35);
-        chckbxSemester.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                txtSemester.setEnabled(true);
-                txtSemester.setText("");
-
-            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                txtSemester.setEnabled(false);
-                txtSemester.setText("Enter Semester");
-
-            }
-
-            validate();
-            repaint();
-        });
-        contentPane.add(chckbxSemester);
-
-
         //Course text field
-        txtCourseCode = new JTextField();
-//        txtCourseCode.setText("Enter Course Code");
-//        txtCourseCode.setEnabled(false);
-        txtCourseCode.setBounds(21, 139, 186, 32);
-        contentPane.add(txtCourseCode);
-        txtCourseCode.setColumns(10);
+        txtCourseNum = new JTextField();
+        txtCourseNum.setColumns(10);
 
+        JPanel fieldsPane = new JPanel();
+        fieldsPane.setLayout(new GridLayout(3, 2));
+        fieldsPane.add(txtSemester);
+        fieldsPane.add(new JLabel("Semester"));
+        fieldsPane.add(txtStudentId);
+        fieldsPane.add(new JLabel("Student ID"));
+        fieldsPane.add(txtCourseNum);
+        fieldsPane.add(new JLabel("Course Code"));
+        contentPane.add(fieldsPane);
+
+
+        //Semester check box
+        JCheckBox chckbx_TotalPoints = new JCheckBox("Total Points");
+        chckbx_TotalPoints.setEnabled(false);
         //Course check box
-        JCheckBox chckbxCourse = new JCheckBox("Course");
-        chckbxCourse.setBounds(224, 138, 179, 35);
-        chckbxCourse.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                txtCourseCode.setEnabled(true);
-                txtCourseCode.setText("");
-
-            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                txtCourseCode.setEnabled(false);
-                txtCourseCode.setText("Enter Course Code");
-
-            }
-
-            validate();
-            repaint();
-        });
-        contentPane.add(chckbxCourse);
+        JCheckBox chckbx_LGrade = new JCheckBox("Letter Grade");
+        chckbx_LGrade.setEnabled(false);
 
 
         //The main man, the big B
@@ -136,7 +86,6 @@ public class YouEye extends JFrame {
             final Connection conn = DriverManager.getConnection(connStr, USER_NAME, PWD);
             conn.setAutoCommit(false);
             s = conn.createStatement();
-
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.print("Connection Error");
@@ -144,7 +93,7 @@ public class YouEye extends JFrame {
             System.exit(0);
         }
 
-        // sql textfield (only for debugging)
+        // SQL textfield (only for debugging)
         txtSQL.addActionListener((ActionEvent a) -> {
             String inputQuery = txtSQL.getText();
             System.out.println("Executing query:\n" + inputQuery);
@@ -157,79 +106,188 @@ public class YouEye extends JFrame {
                         "\nrs.toString():\t" + rs.toString() +
                         "\nresultToString:\t" + JDBC.resultSetToString(rs);
                 System.out.println(output);
-
-
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
+
+            validate();
+            repaint();
         });
+
+
+        // this will make sure that the textboxes are only enabled if all textFields are filled
+        final DocumentListener textChangeListener = new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                updateChckboxes();
+            }
+            public void removeUpdate(DocumentEvent e) {
+                updateChckboxes();
+            }
+            public void insertUpdate(DocumentEvent e) {
+                updateChckboxes();
+            }
+
+            private void updateChckboxes() {
+                boolean allTextFieldsFilled = txtStudentId.getText().length() > 0 && txtSemester.getText().length() > 0 && txtCourseNum.getText().length() > 0;
+                chckbx_LGrade.setEnabled(allTextFieldsFilled);
+                chckbx_TotalPoints.setEnabled(allTextFieldsFilled);
+
+                if (!allTextFieldsFilled) {
+                    chckbx_LGrade.setSelected(false);
+                    chckbx_TotalPoints.setSelected(false);
+                }
+            }
+        };
+        txtCourseNum.getDocument().addDocumentListener(textChangeListener);
+        txtSemester.getDocument().addDocumentListener(textChangeListener);
+        txtStudentId.getDocument().addDocumentListener(textChangeListener);
+
+        JPanel searchOptionsPane = new JPanel();
+        searchOptionsPane.setLayout(new GridLayout(0, 1));
+        searchOptionsPane.add(chckbx_LGrade);
+        searchOptionsPane.add(chckbx_TotalPoints);
+        searchOptionsPane.add(btnSearch);
+
+        contentPane.add(searchOptionsPane);
+        contentPane.add(txtSQL);
+        contentPane.add(resultsPanelContainer);
+
 
         final ActionListener submitListener = (ActionEvent a) -> {
             System.out.println("Submitted...");
             final boolean issStudentId = txtStudentId.getText().length() > 0,
                     issSemester = txtSemester.getText().length() > 0,
-                    issCourse = txtCourseCode.getText().length() > 0;
+                    issCourse = txtCourseNum.getText().length() > 0;
+            final String ATTR_STUDENT_ID = "S_ID",
+                    ATTR_TERM = "TERM";
 
-            final String ATTR_STUDENT_ID = "S_ID";
+            String term = txtSemester.getText();
+            String courseNum = txtCourseNum.getText();
+
             String query = "";
-            if (issStudentId && issSemester && issCourse) { // Retrieve
-                // a student's details for a certain course on a certain semester
-                query = "SELECT DISTINCT COURSE_NUM FROM ENROLLED_IN " +
-                        "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() +
-                        "'AND TERM = '" + txtSemester.getText() + "'" +
-                         "AND TERM = '" + txtCourseCode.getText() + "'";
-            } else {
-                if (issStudentId && issSemester) { // Retrieve a student's details for all courses in a certain semester
-                    query = "SELECT DISTINCT COURSE_NUM FROM ENROLLED_IN " +
-                            "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'AND TERM = '" + txtSemester.getText() + "'";
-                } else if (issStudentId && issCourse) {
-                    query = "SELECT DISTINCT TERM FROM ENROLLED_IN " +
-                            "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'AND COURSE_NUM = '" + txtCourseCode.getText() + "'";
-                } else if (issSemester && issCourse) { // Retrieve all students' details for a certain course in a certain semester
-                    query = "SELECT DISTINCT " + ATTR_STUDENT_ID + " FROM ENROLLED_IN " +
-                            "WHERE COURSE_NUM = '" + txtCourseCode.getText() + "'" + "AND TERM = '" + txtSemester.getText() + "'";
-                } else if (issStudentId) { // Retrieve all courses and their respective semesters given a student's ID
-                    query = "SELECT DISTINCT COURSE_NUM, TERM " +
-                            "FROM ENROLLED_IN " +
-                            "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'";
-                } else if (issSemester) { // Retrieve multiple instances of multiple students corresponding to what courses they took on a certain semester(?)
-                    query = "SELECT Course_num FROM Course " +
-                            "WHERE TERM = '" + txtSemester.getText() + "'";
-                } else if (issCourse) {// Retrieve students and	the semester in which they took a certain course
-                    query = "SELECT TERM FROM COURSE " +
-                            "WHERE COURSE_NUM = '" + txtCourseCode.getText() + "'";
-                } else query = "";
+            if (!issStudentId && !issSemester && !issCourse) {
+                return;
+            }
 
-                try {
-                    ResultSet r = s.executeQuery(query);
-                    updateResults(r);
-                    if (r.next()) {
-                        /*list results*/
-                        chckbxCourse.setText(r.getString(1));
-                    } else {
-                        //display results
-                        chckbxCourse.setText("Not Found");
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    chckbxCourse.setText("Query Error");
+            if (issStudentId && issSemester && issCourse) {
+                if (chckbx_TotalPoints.isSelected()) {
+                    //(8) 3 inputs ID and course and term output his total points{
+                    //(9) 3 inputs ID course and term output letter grade
+                    query = "SELECT sum ((POINTSEARNED/POINTS)*WEIGHT) AS overall_points" +
+                            "FROM ENROLLED_IN NATURAL JOIN GRADE_DISTRIBUTION" +
+                            "WHERE S_ID = " + txtStudentId.getText() + " AND COURSE_NUM = '" + courseNum + "' AND term = '" + term + "';";
+                } else if (chckbx_LGrade.isSelected()) {
+                    query = "SELECT  LGrade FROM (" +
+                            "SELECT  LGrade " +
+                            "    FROM GRADE_CUTOFFS" +
+                            "    WHERE  GrdCutoff <= (" +
+                            "        SELECT sum ((POINTSEARNED/POINTS)*WEIGHT) AS overall_points" +
+                            "        FROM enrolled_in natural join GRADE_DISTRIBUTION" +
+                            "        WHERE S_ID = '" + txtStudentId.getText() + "' AND course_num = '" + courseNum + "' AND term = '" + term + "'" +
+                            "    )" +
+                            "AND course_num = '" + courseNum + "'" +
+                            "ORDER BY GrdCutoff DESC" +
+                            ")" +
+                            "where ROWNUM = 1;";
+                } else {
+                    // (7) 3 inputs (ID, course and term) output:	grades
+                    final String condition = ATTR_STUDENT_ID + " = '" + txtStudentId.getText() +
+                            "'AND " + ATTR_TERM + " = '" + txtSemester.getText() + "'" +
+                            "AND " + ATTR_TERM + " = '" + txtCourseNum.getText() + "'";
+
+                    query = "SELECT DISTINCT COURSE_NUM " +
+                            "FROM ENROLLED_IN " +
+                            "WHERE " + condition;
+                }
+            } else if (issStudentId && issSemester) {
+                // Retrieve a student's details for all courses in a certain semester
+                query = "SELECT DISTINCT COURSE_NUM FROM ENROLLED_IN " +
+                        "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'AND " + ATTR_TERM + " = '" + txtSemester.getText() + "'";
+            } else if (issStudentId && issCourse) {
+                query = "SELECT DISTINCT " + ATTR_TERM + " FROM ENROLLED_IN " +
+                        "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'AND COURSE_NUM = '" + txtCourseNum.getText() + "'";
+            } else if (issSemester && issCourse) {
+                // Retrieve all students' details for a certain course in a certain semester
+                query = "SELECT DISTINCT " + ATTR_STUDENT_ID + " FROM ENROLLED_IN " +
+                        "WHERE COURSE_NUM = '" + txtCourseNum.getText() + "'" + "AND " + ATTR_TERM + " = '" + txtSemester.getText() + "'";
+            } else if (issStudentId) {
+                // Retrieve all courses and their respective semesters given a student's ID
+
+                String[] conditions = {
+                        ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'"
+                };
+                final String condition = String.join(", ", conditions);
+
+                query = "SELECT DISTINCT COURSE_NUM, " + ATTR_TERM + " " +
+                        "FROM ENROLLED_IN " +
+                        "WHERE " + condition;
+            } else {
+                if (issSemester) {
+                    // Retrieve multiple instances of multiple students corresponding to what courses they took on a certain semester
+
+                    String selections = "COURSE_NUM" + (issCourse ? (", " + ATTR_TERM) : "");
+                    ArrayList<String> conditions = new ArrayList<>(Arrays.asList(
+                            ("COURSE_NUM = '" + txtCourseNum.getText() + "'"),
+                            (ATTR_TERM + " = '" + txtSemester.getText() + "'")
+                    ));
+
+                    query = "SELECT " + String.join(", ", selections) +
+                            " FROM COURSE " +
+                            "WHERE " + String.join(", ", conditions);
+                } else if (issCourse) {
+                    // Retrieve students and the semester in which they took a certain course
+                    String condition = "";
+                    query = "SELECT " + ATTR_TERM +
+                            " FROM COURSE " +
+                            "WHERE " + condition;
                 }
             }
+
+            try {
+                ResultSet r = s.executeQuery(query);
+                updateResults(r);
+                if (r.next()) {
+                    /*list results*/
+                    chckbx_LGrade.setText(r.getString(1));
+                } else {
+                    //display results
+                    chckbx_LGrade.setText("Not Found");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                StringBuilder sb = new StringBuilder(e.toString());
+                for (StackTraceElement ste : e.getStackTrace()) {
+                    sb.append("\n\tat ");
+                    sb.append(ste);
+                }
+                String trace = sb.toString();
+                final String message = "SQL state:\t" + e.getSQLState() +
+                        "\n" + trace;
+                JOptionPane.showMessageDialog(
+                        null,
+                        message,
+                        "Error Massage",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+            validate();
+            repaint();
         };
+
+        // Retrieve a student's details for a certain course on a certain semester
+        // Retrieve a student's details for all courses in a certain semester
+        // Retrieve all students' details for a certain course in a certain semester
+        // Retrieve all courses and their respective semesters given a student's ID
+        // Retrieve multiple instances of multiple students corresponding to what courses they took on a certain semester(?)
+        // Retrieve students and	the semester in which they took a certain course
+        /*list results*/
+        //display results
+
         //h
         btnSearch.addActionListener(submitListener);
-        txtCourseCode.addActionListener(submitListener);
+
+        txtCourseNum.addActionListener(submitListener);
         txtSemester.addActionListener(submitListener);
         txtStudentId.addActionListener(submitListener);
-
-        btnSearch.setBounds(140, 196, 141, 35);
-        contentPane.add(btnSearch);
-
-        contentPane.add(txtSQL);
-        txtSQL.setBounds(21, 263, 238, 35);
-
-        contentPane.add(resultsPanelContainer);
-        resultsPanelContainer.setBounds(300, 179, 332, 384);
     }
 
     private void updateResults(ResultSet rs) {
@@ -268,6 +326,5 @@ public class YouEye extends JFrame {
             }
         }
     }
-
 }
 
