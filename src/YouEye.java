@@ -221,7 +221,7 @@ public class YouEye extends JFrame {
                 query = "SELECT DISTINCT COURSE_NUM, " + ATTR_TERM + " " +
                         "FROM ENROLLED_IN " +
                         "WHERE " + condition;
-            } else {
+            } else 
                 if (issSemester) {
                     // Retrieve multiple instances of multiple students corresponding to what courses they took on a certain semester
 
@@ -235,13 +235,15 @@ public class YouEye extends JFrame {
                             " FROM COURSE " +
                             "WHERE " + String.join(", ", conditions);
                 } else if (issCourse) {
+                	//The following line is to test the validity of the condition 
+                	txtCourseNum.setText("Whaddya know, I exist");
                     // Retrieve students and the semester in which they took a certain course
                     String condition = "";
                     query = "SELECT " + ATTR_TERM +
                             " FROM COURSE " +
                             "WHERE " + condition;
                 }
-            }
+            
 
             try {
                 ResultSet r = s.executeQuery(query);
