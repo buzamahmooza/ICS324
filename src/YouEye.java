@@ -4,12 +4,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Queue;
 
 public class YouEye extends JFrame {
 
@@ -18,6 +15,7 @@ public class YouEye extends JFrame {
             txtSemester,
             txtCourseNum;
     private JTextField txtSQL = new JTextField(15);
+    JFrame frame;
 
     Statement s = null;
     final int SIZE_FACTOR = 2;
@@ -26,7 +24,7 @@ public class YouEye extends JFrame {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                YouEye frame = new YouEye();
+                JFrame frame = new YouEye();
                 frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -35,6 +33,7 @@ public class YouEye extends JFrame {
     }
 
     public YouEye() {
+        frame = this;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -45,23 +44,30 @@ public class YouEye extends JFrame {
         //Student ID text field
         txtStudentId = new JTextField();
         txtStudentId.setColumns(10);
+        txtStudentId.setFont(font);
 
         //Semester text field
         txtSemester = new JTextField();
         txtSemester.setColumns(10);
+        txtSemester.setFont(font);
 
         //Course text field
         txtCourseNum = new JTextField();
         txtCourseNum.setColumns(10);
+        txtCourseNum.setFont(font);
+
 
         JPanel fieldsPane = new JPanel();
         fieldsPane.setLayout(new GridLayout(3, 2));
         fieldsPane.add(txtSemester);
         fieldsPane.add(new JLabel("Semester"));
+
         fieldsPane.add(txtStudentId);
         fieldsPane.add(new JLabel("Student ID"));
+
         fieldsPane.add(txtCourseNum);
         fieldsPane.add(new JLabel("Course Code"));
+
         contentPane.add(fieldsPane);
 
 
@@ -71,6 +77,16 @@ public class YouEye extends JFrame {
         //Course check box
         JCheckBox chckbx_LGrade = new JCheckBox("Letter Grade");
         chckbx_LGrade.setEnabled(false);
+
+        // these listeners will make sure that a maximum of only 1 checkbox can be ticked at a time.
+        chckbx_LGrade.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED && chckbx_TotalPoints.isSelected())
+                chckbx_TotalPoints.setSelected(false);
+        });
+        chckbx_TotalPoints.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED && chckbx_LGrade.isSelected())
+                chckbx_LGrade.setSelected(false);
+        });
 
 
         //The main man, the big B
@@ -158,100 +174,103 @@ public class YouEye extends JFrame {
             final boolean issStudentId = txtStudentId.getText().length() > 0,
                     issSemester = txtSemester.getText().length() > 0,
                     issCourse = txtCourseNum.getText().length() > 0;
-            final String ATTR_STUDENT_ID = "S_ID",
+            final String ATTR_COURSE_NUM = "COURSE_NUM",
+                    ATTR_STUDENT_ID = "S_ID",
                     ATTR_TERM = "TERM";
 
-            String term = txtSemester.getText();
-            String courseNum = txtCourseNum.getText();
-
-            String query = "";
+            String query;
             if (!issStudentId && !issSemester && !issCourse) {
                 return;
             }
 
+            // if all 3 inputs
             if (issStudentId && issSemester && issCourse) {
                 if (chckbx_TotalPoints.isSelected()) {
                     //(8) 3 inputs ID and course and term output his total points{
                     //(9) 3 inputs ID course and term output letter grade
                     query = "SELECT sum ((POINTSEARNED/POINTS)*WEIGHT) AS overall_points" +
-                            "FROM ENROLLED_IN NATURAL JOIN GRADE_DISTRIBUTION" +
-                            "WHERE S_ID = " + txtStudentId.getText() + " AND COURSE_NUM = '" + courseNum + "' AND term = '" + term + "';";
+                            "\nFROM ENROLLED_IN NATURAL JOIN GRADE_DISTRIBUTION" +
+                            "\nWHERE " + ATTR_STUDENT_ID + " = " + txtStudentId.getText() + " " +
+                            "\nAND " + ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'" +
+                            "\nAND TERM = '" + txtSemester.getText() + "';";
                 } else if (chckbx_LGrade.isSelected()) {
                     query = "SELECT  LGrade FROM (" +
-                            "SELECT  LGrade " +
-                            "    FROM GRADE_CUTOFFS" +
-                            "    WHERE  GrdCutoff <= (" +
-                            "        SELECT sum ((POINTSEARNED/POINTS)*WEIGHT) AS overall_points" +
-                            "        FROM enrolled_in natural join GRADE_DISTRIBUTION" +
-                            "        WHERE S_ID = '" + txtStudentId.getText() + "' AND course_num = '" + courseNum + "' AND term = '" + term + "'" +
-                            "    )" +
-                            "AND course_num = '" + courseNum + "'" +
-                            "ORDER BY GrdCutoff DESC" +
-                            ")" +
-                            "where ROWNUM = 1;";
+                            "\nSELECT  LGrade " +
+                            "\n    FROM GRADE_CUTOFFS" +
+                            "\n    WHERE  GrdCutoff <= (" +
+                            "\n        SELECT sum ((POINTSEARNED/POINTS)*WEIGHT) AS overall_points" +
+                            "\n        FROM ENROLLED_IN NATURAL JOIN GRADE_DISTRIBUTION" +
+                            "\n        WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'" +
+                            "\n        AND " + ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'" +
+                            "\n        AND TERM = '" + txtSemester.getText() + "'" +
+                            "\n    )" +
+                            "\nAND " + ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'" +
+                            "\nORDER BY GrdCutoff DESC" +
+                            "\n)" +
+                            "\nWHERE ROWNUM = 1;";
                 } else {
                     // (7) 3 inputs (ID, course and term) output:	grades
-                    final String condition = ATTR_STUDENT_ID + " = '" + txtStudentId.getText() +
-                            "'AND " + ATTR_TERM + " = '" + txtSemester.getText() + "'" +
-                            "AND " + ATTR_TERM + " = '" + txtCourseNum.getText() + "'";
+                    final String condition =
+                            ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'" +
+                                    " AND " + ATTR_TERM + " = '" + txtSemester.getText() + "'" +
+                                    " AND " + ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'";
 
-                    query = "SELECT DISTINCT COURSE_NUM " +
-                            "FROM ENROLLED_IN " +
-                            "WHERE " + condition;
+                    query = "SELECT DISTINCT " + ATTR_COURSE_NUM + " " +
+                            "\nFROM ENROLLED_IN " +
+                            "\nWHERE " + condition;
                 }
             } else if (issStudentId && issSemester) {
                 // Retrieve a student's details for all courses in a certain semester
-                query = "SELECT DISTINCT COURSE_NUM FROM ENROLLED_IN " +
-                        "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'AND " + ATTR_TERM + " = '" + txtSemester.getText() + "'";
+                //-- (3) Input ID output: 					courses, terms
+                query = "SELECT DISTINCT " + ATTR_COURSE_NUM + " " +
+                        "\nFROM ENROLLED_IN " +
+                        "\nWHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "' AND " + ATTR_TERM + " = '" + txtSemester.getText() + "'";
             } else if (issStudentId && issCourse) {
-                query = "SELECT DISTINCT " + ATTR_TERM + " FROM ENROLLED_IN " +
-                        "WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'AND COURSE_NUM = '" + txtCourseNum.getText() + "'";
+                query = "SELECT DISTINCT " + ATTR_TERM + " " +
+                        "\nFROM ENROLLED_IN " +
+                        "\nWHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "' AND " + ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'";
             } else if (issSemester && issCourse) {
                 // Retrieve all students' details for a certain course in a certain semester
-                query = "SELECT DISTINCT " + ATTR_STUDENT_ID + " FROM ENROLLED_IN " +
-                        "WHERE COURSE_NUM = '" + txtCourseNum.getText() + "'" + "AND " + ATTR_TERM + " = '" + txtSemester.getText() + "'";
+                query = "SELECT DISTINCT " + ATTR_STUDENT_ID + " " +
+                        "\nFROM ENROLLED_IN " +
+                        "\nWHERE " + ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'" + " AND " + ATTR_TERM + " = '" + txtSemester.getText() + "'";
             } else if (issStudentId) {
                 // Retrieve all courses and their respective semesters given a student's ID
 
                 String[] conditions = {
                         ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'"
                 };
-                final String condition = String.join(", ", conditions);
-
-                query = "SELECT DISTINCT COURSE_NUM, " + ATTR_TERM + " " +
-                        "FROM ENROLLED_IN " +
-                        "WHERE " + condition;
+                // working
+                query = "SELECT DISTINCT " + ATTR_COURSE_NUM + ", " + ATTR_TERM + " " +
+                        "\nFROM ENROLLED_IN " +
+                        "\nWHERE " + String.join(" AND ", conditions);
             } else {
-                if (issSemester) {
-                    // Retrieve multiple instances of multiple students corresponding to what courses they took on a certain semester
+                // Retrieve multiple instances of multiple students corresponding to what courses they took on a certain semester
 
-                    String selections = "COURSE_NUM" + (issCourse ? (", " + ATTR_TERM) : "");
-                    ArrayList<String> conditions = new ArrayList<>(Arrays.asList(
-                            ("COURSE_NUM = '" + txtCourseNum.getText() + "'"),
-                            (ATTR_TERM + " = '" + txtSemester.getText() + "'")
-                    ));
+                String selections = ATTR_COURSE_NUM + (!issSemester ? (", " + ATTR_TERM) : "");
 
-                    query = "SELECT " + String.join(", ", selections) +
-                            " FROM COURSE " +
-                            "WHERE " + String.join(", ", conditions);
-                } else if (issCourse) {
-                    // Retrieve students and the semester in which they took a certain course
-                    String condition = "";
-                    query = "SELECT " + ATTR_TERM +
-                            " FROM COURSE " +
-                            "WHERE " + condition;
-                }
+                ArrayList<String> conditions = new ArrayList<>();
+                if (issCourse) conditions.add(ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'");
+                if (issSemester) conditions.add(ATTR_TERM + " = '" + txtSemester.getText() + "'");
+
+                query = "SELECT " + String.join(", ", selections) + " " +
+                        "\nFROM COURSE " +
+                        "\nWHERE " + String.join(", ", conditions);
             }
 
+            System.out.println("issStudentId = " + issStudentId);
+            System.out.println("issSemester = " + issSemester);
+            System.out.println("issCourse = " + issCourse);
+
+            System.out.println("query:\n" + query + "\n\n");
             try {
                 ResultSet r = s.executeQuery(query);
                 updateResults(r);
                 if (r.next()) {
-                    /*list results*/
-                    chckbx_LGrade.setText(r.getString(1));
+                    txtSQL.setText(r.getString(1));
                 } else {
                     //display results
-                    chckbx_LGrade.setText("Not Found");
+                    txtSQL.setText("Not Found");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -279,16 +298,37 @@ public class YouEye extends JFrame {
         // Retrieve all courses and their respective semesters given a student's ID
         // Retrieve multiple instances of multiple students corresponding to what courses they took on a certain semester(?)
         // Retrieve students and	the semester in which they took a certain course
-        /*list results*/
-        //display results
 
-        //h
         btnSearch.addActionListener(submitListener);
 
         txtCourseNum.addActionListener(submitListener);
         txtSemester.addActionListener(submitListener);
         txtStudentId.addActionListener(submitListener);
+
+        for (Component c : contentPane.getComponents()) {
+            c.setFont(font);
+            c.addComponentListener(resizeListener);
+        }
+        this.addComponentListener(resizeListener);
+        this.pack();
     }
+
+    ComponentListener resizeListener = new ComponentListener() {
+        public void componentHidden(ComponentEvent e) {
+        }
+        public void componentMoved(ComponentEvent e) {
+        }
+        public void componentResized(ComponentEvent e) {
+            int width = frame.getWidth();
+            for (Component component : frame.getContentPane().getComponents()) {
+                component.setFont(new Font(font.getName(), font.getStyle(), width / 25));
+            }
+            // resizing the font as the size of the window changes
+            frame.getContentPane().revalidate();
+        }
+        public void componentShown(ComponentEvent e) {
+        }
+    };
 
     private void updateResults(ResultSet rs) {
         resultsPanelContainer.removeAll();
@@ -301,7 +341,6 @@ public class YouEye extends JFrame {
         ResultSetMetaData rsmd;
         int columnsNumber;
 
-
         public ResultsPanel(ResultSet resultSet) {
             this.resultSet = resultSet;
             try {
@@ -309,7 +348,6 @@ public class YouEye extends JFrame {
                 columnsNumber = rsmd.getColumnCount();
                 this.setLayout(new GridLayout(0, columnsNumber));
 
-                int r = 0;
                 while (resultSet.next()) {
                     //Print one row
                     for (int i = 1; i <= columnsNumber; i++) {
@@ -318,7 +356,6 @@ public class YouEye extends JFrame {
                         resultCell.setEditable(false);
                         this.add(resultCell); //Print one element of a row
                     }
-                    r++;//Move to the next line to print the next row.
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
