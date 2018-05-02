@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c5ced752-48a7-47da-b3bf-0ffdefe5dece" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/src/YouEye.java" afterPath="$PROJECT_DIR$/src/YouEye.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,12 +18,11 @@
       <file leaf-file-name="JDBC.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/JDBC.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="611">
-              <caret line="61" column="24" lean-forward="false" selection-start-line="61" selection-start-column="24" selection-end-line="61" selection-end-column="24" />
+            <state relative-caret-position="682">
+              <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="23" selection-end-column="74" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2846#4043#0" expanded="false" />
-                <marker date="1525017052510" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
+                <marker date="1525197709000" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
               </folding>
             </state>
           </provider>
@@ -31,20 +31,20 @@
       <file leaf-file-name="YouEye.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/YouEye.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-5735">
-              <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+            <state relative-caret-position="-4649">
+              <caret line="113" column="38" lean-forward="true" selection-start-line="113" selection-start-column="38" selection-end-line="113" selection-end-column="38" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1730#2134#0" expanded="false" />
-                <element signature="e#2646#3044#0" expanded="false" />
-                <element signature="e#3560#3969#0" expanded="false" />
-                <marker date="1525018016644" expanded="true" signature="6075:6258" ph="SELECT DISTI... ENROLLED_IN" />
-                <marker date="1525018016644" expanded="true" signature="6991:7176" ph="SELECT DISTI... ENROLLED_IN" />
-                <marker date="1525018016644" expanded="true" signature="7989:8178" ph="SELECT DISTI... ENROLLED_IN" />
-                <marker date="1525018016644" expanded="true" signature="8970:9150" ph="SELECT DISTI... ENROLLED_IN" />
-                <marker date="1525018016644" expanded="true" signature="9057:9150" ph="SELECT DISTI... ENROLLED_IN" />
-                <marker date="1525018016644" expanded="true" signature="9982:10089" ph="SELECT Cours... Course" />
-                <marker date="1525018016644" expanded="true" signature="10873:10982" ph="SELECT TERM COURSE" />
+                <element signature="class#ResultsPanel#0;class#YouEye#0" expanded="false" />
+                <marker date="1525241641265" expanded="true" signature="7274:7696" ph="SELECT sum (... ENROLLED_IN" />
+                <marker date="1525241641265" expanded="true" signature="7786:8754" ph="SELECT LGrad... LGrade" />
+                <marker date="1525241641265" expanded="true" signature="7842:8667" ph="SELECT LGrad... GRADE_CUTOFFS" />
+                <marker date="1525241641265" expanded="true" signature="8017:8472" ph="SELECT sum (... ENROLLED_IN" />
+                <marker date="1525241641265" expanded="true" signature="9217:9358" ph="SELECT DISTI... ENROLLED_IN" />
+                <marker date="1525241641265" expanded="true" signature="9618:9865" ph="SELECT DISTI... ENROLLED_IN" />
+                <marker date="1525241641265" expanded="true" signature="9945:10193" ph="SELECT DISTI... ENROLLED_IN" />
+                <marker date="1525241641265" expanded="true" signature="10365:10617" ph="SELECT DISTI... ENROLLED_IN" />
+                <marker date="1525241641265" expanded="true" signature="10943:11095" ph="SELECT DISTI... ENROLLED_IN" />
+                <marker date="1525241641265" expanded="true" signature="11677:11802" ph="SELECT missi... COURSE" />
               </folding>
             </state>
           </provider>
@@ -67,6 +67,7 @@
       <find>//list results</find>
       <find>issStudent</find>
       <find>pack</find>
+      <find>enrolled_in</find>
     </findStrings>
     <replaceStrings>
       <replace>SQLException e) { e.printStackTrace();</replace>
@@ -260,9 +261,9 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../jasper-1.7" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="extract.method.default.visibility" value="private" />
   </component>
@@ -290,21 +291,53 @@
       <option name="HEIGHT" value="0" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <option name="WIDTH" value="0" />
+      <module />
     </configuration>
     <configuration name="JDBC" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="JDBC" />
-      <module name="ICS324" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="ICS324" />
+      <envs />
     </configuration>
     <configuration name="YouEye" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="YouEye" />
-      <module name="ICS324" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="ICS324" />
+      <envs />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" />
@@ -314,13 +347,24 @@
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="singleModule" />
       </option>
+      <envs />
       <patterns />
     </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="SUITE_NAME" />
@@ -333,21 +377,17 @@
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="singleModule" />
       </option>
       <option name="USE_DEFAULT_REPORTERS" value="false" />
       <option name="PROPERTIES_FILE" />
+      <envs />
       <properties />
       <listeners />
-    </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
     </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
@@ -355,16 +395,19 @@
       <option name="PROGRAM_PARAMETERS" />
       <predefined_log_file id="idea.log" enabled="true" />
     </configuration>
-    <list>
-      <item itemvalue="Application.JDBC" />
-      <item itemvalue="Application.YouEye" />
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="Application.JDBC" />
+      <item index="1" class="java.lang.String" itemvalue="Application.YouEye" />
     </list>
     <recent_temporary>
-      <list>
-        <item itemvalue="Application.YouEye" />
-        <item itemvalue="Application.JDBC" />
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Application.YouEye" />
+        <item index="1" class="java.lang.String" itemvalue="Application.JDBC" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -386,6 +429,8 @@
       <workItem from="1524649466081" duration="1422000" />
       <workItem from="1524676796854" duration="661000" />
       <workItem from="1525011132363" duration="6848000" />
+      <workItem from="1525197724126" duration="259000" />
+      <workItem from="1525237618343" duration="3430000" />
     </task>
     <task id="LOCAL-00001" summary="Added big font">
       <created>1524577110544</created>
@@ -415,11 +460,18 @@
       <option name="project" value="LOCAL" />
       <updated>1525017110191</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added YouEye class.&#10;Added JDBC functionality to YouEye class.&#10;Eliminated the need for checkboxes.&#10;Added ActionListener to all textFields">
+      <created>1525197793337</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1525197793337</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="42431000" />
+    <option name="totallyTimeSpent" value="46120000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -443,13 +495,12 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935393" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2766854" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2766854" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935393" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935393" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -462,6 +513,7 @@
       <window_info id="Database Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935393" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -485,12 +537,73 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/JDBC.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1375">
+          <caret line="61" column="24" lean-forward="false" selection-start-line="61" selection-start-column="24" selection-end-line="61" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1525197709000" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/YouEye.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4750">
+          <caret line="190" column="46" lean-forward="false" selection-start-line="190" selection-start-column="46" selection-end-line="190" selection-end-column="46" />
+          <folding>
+            <element signature="class#ResultsPanel#0;class#YouEye#0" expanded="false" />
+            <marker date="1525241641265" expanded="true" signature="7274:7696" ph="SELECT sum (... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="7786:8754" ph="SELECT LGrad... LGrade" />
+            <marker date="1525241641265" expanded="true" signature="7842:8667" ph="SELECT LGrad... GRADE_CUTOFFS" />
+            <marker date="1525241641265" expanded="true" signature="8017:8472" ph="SELECT sum (... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="9217:9358" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="9618:9865" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="9945:10193" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="10365:10617" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="10943:11095" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="11677:11802" ph="SELECT missi... COURSE" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/JDBC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="935">
+          <caret line="61" column="24" lean-forward="false" selection-start-line="61" selection-start-column="24" selection-end-line="61" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1525197709000" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/YouEye.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding>
+            <element signature="class#ResultsPanel#0;class#YouEye#0" expanded="false" />
+            <marker date="1525241641265" expanded="true" signature="7274:7696" ph="SELECT sum (... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="7786:8754" ph="SELECT LGrad... LGrade" />
+            <marker date="1525241641265" expanded="true" signature="7842:8667" ph="SELECT LGrad... GRADE_CUTOFFS" />
+            <marker date="1525241641265" expanded="true" signature="8017:8472" ph="SELECT sum (... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="9217:9358" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="9618:9865" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="9945:10193" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="10365:10617" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="10943:11095" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="11677:11802" ph="SELECT missi... COURSE" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/JDBC.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2846#4043#0" expanded="false" />
-            <marker date="1525017052510" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
+            <marker date="1525197709000" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
           </folding>
         </state>
       </provider>
@@ -501,8 +614,7 @@
           <caret line="171" column="13" lean-forward="true" selection-start-line="171" selection-start-column="13" selection-end-line="171" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2846#4043#0" expanded="false" />
-            <marker date="1525017052510" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
+            <marker date="1525197709000" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
           </folding>
         </state>
       </provider>
@@ -513,8 +625,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2846#4043#0" expanded="false" />
-            <marker date="1525017052510" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
+            <marker date="1525197709000" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
           </folding>
         </state>
       </provider>
@@ -525,8 +636,7 @@
           <caret line="106" column="42" lean-forward="false" selection-start-line="106" selection-start-column="42" selection-end-line="106" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2846#4043#0" expanded="false" />
-            <marker date="1525017052510" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
+            <marker date="1525197709000" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
           </folding>
         </state>
       </provider>
@@ -537,8 +647,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2846#4043#0" expanded="false" />
-            <marker date="1525017052510" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
+            <marker date="1525197709000" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
           </folding>
         </state>
       </provider>
@@ -570,34 +679,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_121/src.zip!/java/sql/DriverManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1155">
+          <caret line="80" column="20" lean-forward="false" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/JDBC.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="611">
-          <caret line="61" column="24" lean-forward="false" selection-start-line="61" selection-start-column="24" selection-end-line="61" selection-end-column="24" />
+        <state relative-caret-position="682">
+          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="23" selection-end-column="74" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2846#4043#0" expanded="false" />
-            <marker date="1525017052510" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
+            <marker date="1525197709000" expanded="true" signature="2236:2347" ph="SELECT SNAME... MAJOR" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_121/src.zip!/java/awt/Container.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="345" column="23" lean-forward="false" selection-start-line="345" selection-start-column="23" selection-end-line="345" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/YouEye.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5735">
-          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        <state relative-caret-position="-4649">
+          <caret line="113" column="38" lean-forward="true" selection-start-line="113" selection-start-column="38" selection-end-line="113" selection-end-column="38" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1730#2134#0" expanded="false" />
-            <element signature="e#2646#3044#0" expanded="false" />
-            <element signature="e#3560#3969#0" expanded="false" />
-            <marker date="1525018016644" expanded="true" signature="6075:6258" ph="SELECT DISTI... ENROLLED_IN" />
-            <marker date="1525018016644" expanded="true" signature="6991:7176" ph="SELECT DISTI... ENROLLED_IN" />
-            <marker date="1525018016644" expanded="true" signature="7989:8178" ph="SELECT DISTI... ENROLLED_IN" />
-            <marker date="1525018016644" expanded="true" signature="8970:9150" ph="SELECT DISTI... ENROLLED_IN" />
-            <marker date="1525018016644" expanded="true" signature="9057:9150" ph="SELECT DISTI... ENROLLED_IN" />
-            <marker date="1525018016644" expanded="true" signature="9982:10089" ph="SELECT Cours... Course" />
-            <marker date="1525018016644" expanded="true" signature="10873:10982" ph="SELECT TERM COURSE" />
+            <element signature="class#ResultsPanel#0;class#YouEye#0" expanded="false" />
+            <marker date="1525241641265" expanded="true" signature="7274:7696" ph="SELECT sum (... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="7786:8754" ph="SELECT LGrad... LGrade" />
+            <marker date="1525241641265" expanded="true" signature="7842:8667" ph="SELECT LGrad... GRADE_CUTOFFS" />
+            <marker date="1525241641265" expanded="true" signature="8017:8472" ph="SELECT sum (... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="9217:9358" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="9618:9865" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="9945:10193" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="10365:10617" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="10943:11095" ph="SELECT DISTI... ENROLLED_IN" />
+            <marker date="1525241641265" expanded="true" signature="11677:11802" ph="SELECT missi... COURSE" />
           </folding>
         </state>
       </provider>
@@ -659,7 +783,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

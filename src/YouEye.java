@@ -8,6 +8,16 @@ import java.awt.event.*;
 import java.sql.*;
 import java.util.ArrayList;
 
+//To view all available tables:     SELECT table_name FROM user_tables
+
+/**
+ * ICS324 project
+ * An SQL database system to retrieve the student details
+ * <p>
+ * <p>
+ * Tip: To view all available tables, use this query:
+ * SELECT table_name FROM user_tables
+ */
 public class YouEye extends JFrame {
 
     private JPanel resultsPanelContainer = new JPanel();
@@ -92,8 +102,9 @@ public class YouEye extends JFrame {
         //The main man, the big B
         JButton btnSearch = new JButton("Search");
 
-        String connStr = "jdbc:oracle:thin:@172.16.0.239:1521:xe";
-        //        "jdbc:oracle:thin:@ics-db:1521:xe";
+        final String SUB_NAME = "172.16.0.239";
+        //   jdbc:subprotocol:subname
+        String connStr = "jdbc:oracle:thin:@" + SUB_NAME + ":1521:xe";
 
 
         try {
@@ -174,9 +185,12 @@ public class YouEye extends JFrame {
             final boolean issStudentId = txtStudentId.getText().length() > 0,
                     issSemester = txtSemester.getText().length() > 0,
                     issCourse = txtCourseNum.getText().length() > 0;
-            final String ATTR_COURSE_NUM = "COURSE_NUM",
+            final String
+                    ATTR_COURSE_NUM = "COURSE_NUM",
                     ATTR_STUDENT_ID = "S_ID",
-                    ATTR_TERM = "TERM";
+                    ATTR_TERM = "TERM",
+                    TB_ENROLLED = "ENROLLED" // TB = table
+             ;
 
             String query;
             if (!issStudentId && !issSemester && !issCourse) {
@@ -189,7 +203,7 @@ public class YouEye extends JFrame {
                     //(8) 3 inputs ID and course and term output his total points{
                     //(9) 3 inputs ID course and term output letter grade
                     query = "SELECT sum ((POINTSEARNED/POINTS)*WEIGHT) AS overall_points" +
-                            "\nFROM ENROLLED_IN NATURAL JOIN GRADE_DISTRIBUTION" +
+                            "\nFROM " + TB_ENROLLED + " NATURAL JOIN GRADE_DISTRIBUTION" +
                             "\nWHERE " + ATTR_STUDENT_ID + " = " + txtStudentId.getText() + " " +
                             "\nAND " + ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'" +
                             "\nAND TERM = '" + txtSemester.getText() + "';";
@@ -199,7 +213,7 @@ public class YouEye extends JFrame {
                             "\n    FROM GRADE_CUTOFFS" +
                             "\n    WHERE  GrdCutoff <= (" +
                             "\n        SELECT sum ((POINTSEARNED/POINTS)*WEIGHT) AS overall_points" +
-                            "\n        FROM ENROLLED_IN NATURAL JOIN GRADE_DISTRIBUTION" +
+                            "\n        FROM " + TB_ENROLLED + " NATURAL JOIN GRADE_DISTRIBUTION" +
                             "\n        WHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "'" +
                             "\n        AND " + ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'" +
                             "\n        AND TERM = '" + txtSemester.getText() + "'" +
@@ -216,23 +230,23 @@ public class YouEye extends JFrame {
                                     " AND " + ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'";
 
                     query = "SELECT DISTINCT " + ATTR_COURSE_NUM + " " +
-                            "\nFROM ENROLLED_IN " +
+                            "\nFROM " + TB_ENROLLED + " " +
                             "\nWHERE " + condition;
                 }
             } else if (issStudentId && issSemester) {
                 // Retrieve a student's details for all courses in a certain semester
                 //-- (3) Input ID output: 					courses, terms
                 query = "SELECT DISTINCT " + ATTR_COURSE_NUM + " " +
-                        "\nFROM ENROLLED_IN " +
+                        "\nFROM " + TB_ENROLLED + " " +
                         "\nWHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "' AND " + ATTR_TERM + " = '" + txtSemester.getText() + "'";
             } else if (issStudentId && issCourse) {
                 query = "SELECT DISTINCT " + ATTR_TERM + " " +
-                        "\nFROM ENROLLED_IN " +
+                        "\nFROM " + TB_ENROLLED + " " +
                         "\nWHERE " + ATTR_STUDENT_ID + " = '" + txtStudentId.getText() + "' AND " + ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'";
             } else if (issSemester && issCourse) {
                 // Retrieve all students' details for a certain course in a certain semester
                 query = "SELECT DISTINCT " + ATTR_STUDENT_ID + " " +
-                        "\nFROM ENROLLED_IN " +
+                        "\nFROM " + TB_ENROLLED + " " +
                         "\nWHERE " + ATTR_COURSE_NUM + " = '" + txtCourseNum.getText() + "'" + " AND " + ATTR_TERM + " = '" + txtSemester.getText() + "'";
             } else if (issStudentId) {
                 // Retrieve all courses and their respective semesters given a student's ID
@@ -242,7 +256,7 @@ public class YouEye extends JFrame {
                 };
                 // working
                 query = "SELECT DISTINCT " + ATTR_COURSE_NUM + ", " + ATTR_TERM + " " +
-                        "\nFROM ENROLLED_IN " +
+                        "\nFROM " + TB_ENROLLED + " " +
                         "\nWHERE " + String.join(" AND ", conditions);
             } else {
                 // Retrieve multiple instances of multiple students corresponding to what courses they took on a certain semester
@@ -305,9 +319,13 @@ public class YouEye extends JFrame {
         txtSemester.addActionListener(submitListener);
         txtStudentId.addActionListener(submitListener);
 
-        for (Component c : contentPane.getComponents()) {
-            c.setFont(font);
-            c.addComponentListener(resizeListener);
+        for (Component component : contentPane.getComponents()) {
+            component.setFont(font);
+            component.addComponentListener(resizeListener);
+            if (component instanceof Container)
+                for (Component innerComponent : ((Container) component).getComponents()) {
+                    innerComponent.addComponentListener(resizeListener);
+                }
         }
         this.addComponentListener(resizeListener);
         this.pack();
@@ -317,15 +335,13 @@ public class YouEye extends JFrame {
         public void componentHidden(ComponentEvent e) {
         }
         public void componentMoved(ComponentEvent e) {
+            dynamicallyResizeComponentFont(YouEye.this, YouEye.this.font, false);
         }
         public void componentResized(ComponentEvent e) {
-            int width = frame.getWidth();
-            for (Component component : frame.getContentPane().getComponents()) {
-                component.setFont(new Font(font.getName(), font.getStyle(), width / 25));
-            }
-            // resizing the font as the size of the window changes
-            frame.getContentPane().revalidate();
+            dynamicallyResizeComponentFont(YouEye.this, YouEye.this.font, false);
         }
+
+
         public void componentShown(ComponentEvent e) {
         }
     };
@@ -334,6 +350,28 @@ public class YouEye extends JFrame {
         resultsPanelContainer.removeAll();
         resultsPanelContainer.add(new ResultsPanel(rs));
         resultsPanelContainer.repaint();
+    }
+
+    public static void dynamicallyResizeComponentFont(Component container, Font font, boolean recursive) {
+        final int width = container.getWidth();
+        dynamicallyResizeComponentFont(container, font, recursive, width);
+    }
+    private static void dynamicallyResizeComponentFont(Component container, Font font, boolean recursive, final int width) {
+        resizeFont(font, width, container);
+        if (container instanceof Container)
+            for (Component component : ((Container) container).getComponents()) {
+                resizeFont(font, width, component);
+                if (recursive) {
+                    if (component instanceof Container) {
+                        dynamicallyResizeComponentFont(component, font, true);
+                    }
+                }
+            }
+        // resizing the font as the size of the window changes
+        container.revalidate();
+    }
+    private static void resizeFont(Font font, int width, Component component) {
+        component.setFont(new Font(font.getName(), font.getStyle(), width / 25));
     }
 
     class ResultsPanel extends JPanel {
